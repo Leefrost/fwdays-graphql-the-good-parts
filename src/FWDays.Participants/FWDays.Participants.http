@@ -1,0 +1,6 @@
+@FWDays.Participants_HostAddress = http://localhost:5145
+
+GET {{FWDays.Participants_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FWDays.Gateway", "src\FWDays.Gateway\FWDays.Gateway.csproj", "{A119BDF2-61BC-4885-835E-5C99800EA581}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FWDays.Speakers", "src\FWDays.Speakers\FWDays.Speakers.csproj", "{672D569B-D19E-46B8-8E94-6E671052C20E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FWDays.Participants", "src\FWDays.Participants\FWDays.Participants.csproj", "{73E93EBC-7CCA-456C-9D55-97B32950BB53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A119BDF2-61BC-4885-835E-5C99800EA581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A119BDF2-61BC-4885-835E-5C99800EA581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A119BDF2-61BC-4885-835E-5C99800EA581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A119BDF2-61BC-4885-835E-5C99800EA581}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672D569B-D19E-46B8-8E94-6E671052C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672D569B-D19E-46B8-8E94-6E671052C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672D569B-D19E-46B8-8E94-6E671052C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672D569B-D19E-46B8-8E94-6E671052C20E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73E93EBC-7CCA-456C-9D55-97B32950BB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73E93EBC-7CCA-456C-9D55-97B32950BB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73E93EBC-7CCA-456C-9D55-97B32950BB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73E93EBC-7CCA-456C-9D55-97B32950BB53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
