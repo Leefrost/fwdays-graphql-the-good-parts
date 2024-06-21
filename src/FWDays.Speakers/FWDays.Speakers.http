@@ -1,6 +1,0 @@
-@FWDays.Speakers_HostAddress = http://localhost:5189
-
-GET {{FWDays.Speakers_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
