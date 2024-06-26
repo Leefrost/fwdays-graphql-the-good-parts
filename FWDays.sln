@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{5A6E31
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FWDays.Tests", "tests\FWDays.Tests\FWDays.Tests.csproj", "{94962184-EF21-41EF-B7D0-03EB32C8F616}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FWDays.Tracks", "src\FWDays.Tracks\FWDays.Tracks.csproj", "{640C725E-297D-4D8E-9D92-16B08C95812D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{94962184-EF21-41EF-B7D0-03EB32C8F616}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94962184-EF21-41EF-B7D0-03EB32C8F616}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94962184-EF21-41EF-B7D0-03EB32C8F616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640C725E-297D-4D8E-9D92-16B08C95812D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640C725E-297D-4D8E-9D92-16B08C95812D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640C725E-297D-4D8E-9D92-16B08C95812D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640C725E-297D-4D8E-9D92-16B08C95812D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{94962184-EF21-41EF-B7D0-03EB32C8F616} = {5A6E310B-37B3-4607-866C-2F02FC6D6336}
