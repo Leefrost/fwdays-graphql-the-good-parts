@@ -1,0 +1,6 @@
+@FWDays.Tracks_HostAddress = http://localhost:5183
+
+GET {{FWDays.Tracks_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
