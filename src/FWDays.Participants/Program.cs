@@ -1,44 +1,48 @@
-var builder = WebApplication.CreateBuilder(args);
+using FWDays.Participants;
+using FWDays.Participants.Database;
+using FWDays.Participants.Loaders;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(o =>
+    o.AddDefaultPolicy(b =>
+        b.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin()));
+
+builder.Services
+    .AddPooledDbContextFactory<ParticipantsDbContext>(
+        (s, o) => o
+            .UseNpgsql(builder.Configuration.GetConnectionString("Database"))
+            .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
+
+builder.Services.AddScoped(serviceProvider => serviceProvider
+    .GetRequiredService<IDbContextFactory<ParticipantsDbContext>>()
+    .CreateDbContext());
+
+builder.Services.AddGraphQLServer()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+    .AddQueryType()
+    .AddMutationType()
+    .AddTypeExtension<Queries>()
+    .AddTypeExtension<Mutations>()
+    .AddTypeExtension<ParticipantNode>()
+    .AddDataLoader<ParticipantsByIdDataLoader>()
+    .AddFiltering()
+    .AddSorting()
+    .AddGlobalObjectIdentification()
+    .EnsureDatabaseIsCreated();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseCors();
+app.UseRouting();
+app.MapGraphQL();
+
+app.MapGet("/", context =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+    context.Response.Redirect("/graphql", true);
+    return Task.CompletedTask;
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

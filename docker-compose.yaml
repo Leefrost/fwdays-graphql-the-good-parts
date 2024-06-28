@@ -17,25 +17,6 @@ services:
   #     - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
   #   depends_on:
   #     - db
-
-  # participants-api:
-  #   container_name: fwdays-participants-api
-  #   image: fwdays-participants-api
-  #   build:
-  #     context: ./src/FWDays.Participants
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ASPNETCORE_HTTP_PORTS=8080
-  #     - ASPNETCORE_HTTP_PORTS=8081
-  #   ports:
-  #     - 8080:8080
-  #     - 8081:8081
-  #   volumes:
-  #     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-  #     - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-  #   depends_on:
-  #     - db
   
   speakers-api:
     container_name: fwdays-speakers-api
@@ -66,7 +47,22 @@ services:
       - 9002:8080
     depends_on:
       - db
-      
+
+  participants-api:
+    container_name: fwdays-participants-api
+    image: fwdays-participants-api
+    build:
+      context: .
+      dockerfile: ./src/FWDays.Participants/Dockerfile
+    environment:
+      - ConnectionStrings__Database=Host=192.168.0.105;Port=6432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - 9003:8080
+    depends_on:
+      - db
+
   db:
     image: postgres:16.1-alpine3.18
     environment:

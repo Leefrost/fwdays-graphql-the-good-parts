@@ -6,7 +6,7 @@ namespace FWDays.Tracks;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class Mutations
 {
-    public async Task<Track> AddSpeakerAsync(
+    public async Task<Track> AddTrackAsync(
         AddTrackPayload input,
         [Service] TracksDbContext context,
         CancellationToken cancellationToken)

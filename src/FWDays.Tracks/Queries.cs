@@ -8,9 +8,9 @@ public class Queries
 {
     [UseDbContext(typeof(TracksDbContext))]
     [UsePaging]
-    public IQueryable<Track> GetSpeakers([Service] TracksDbContext context) 
+    public IQueryable<Track> GetTracks([Service] TracksDbContext context) 
         => context.Tracks.OrderBy(t => t.Name);
     
-    public static Task<Track> GetSpeakerByIdAsync(int id, TracksByIdDataLoader tracksById, CancellationToken cancellationToken)
+    public static Task<Track> GetTracksByIdAsync(int id, TracksByIdDataLoader tracksById, CancellationToken cancellationToken)
         => tracksById.LoadAsync(id, cancellationToken);
 }
