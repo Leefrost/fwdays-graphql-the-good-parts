@@ -1,44 +1,43 @@
+using StackExchange.Redis;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(o =>
+    o.AddDefaultPolicy(b =>
+        b.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin()));
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+const string participants = "participants";
+const string speakers = "speakers";
+const string tracks = "tracks";
 
+var participantsUrl = builder.Configuration.GetValue<string>("ParticipantsApi");
+var speakersUrl = builder.Configuration.GetValue<string>("SpeakersApi");
+var tracksUrl = builder.Configuration.GetValue<string>("TracksApi");
+
+var schemaConnString = builder.Configuration.GetConnectionString("Redis");
+
+builder.Services.AddHttpClient(participants, c => c.BaseAddress = new Uri(participantsUrl!));
+builder.Services.AddHttpClient(speakers, c => c.BaseAddress = new Uri(speakersUrl!));
+builder.Services.AddHttpClient(tracks, c => c.BaseAddress = new Uri(tracksUrl!));
+
+builder.Services.AddSingleton(ConnectionMultiplexer.Connect(schemaConnString!));
+
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType(d => d.Name("Query"))
+    .AddRemoteSchemasFromRedis("FWDays", sp => sp.GetRequiredService<ConnectionMultiplexer>());
+    
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseCors();
+app.UseRouting();
+app.MapGraphQL();
+
+app.MapGet("/", context =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+    context.Response.Redirect("/graphql", true);
+    return Task.CompletedTask;
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
