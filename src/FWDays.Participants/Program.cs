@@ -1,5 +1,6 @@
 using FWDays.Participants;
 using FWDays.Participants.Database;
+using FWDays.Participants.Extensions;
 using FWDays.Participants.Loaders;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,18 +21,7 @@ builder.Services.AddScoped(serviceProvider => serviceProvider
     .GetRequiredService<IDbContextFactory<ParticipantsDbContext>>()
     .CreateDbContext());
 
-builder.Services.AddGraphQLServer()
-    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
-    .AddQueryType()
-    .AddMutationType()
-    .AddTypeExtension<Queries>()
-    .AddTypeExtension<Mutations>()
-    .AddTypeExtension<ParticipantNode>()
-    .AddDataLoader<ParticipantsByIdDataLoader>()
-    .AddFiltering()
-    .AddSorting()
-    .AddGlobalObjectIdentification()
-    .EnsureDatabaseIsCreated();
+builder.Services.AddGraphQLSupport(builder.Configuration);
 
 var app = builder.Build();
 
