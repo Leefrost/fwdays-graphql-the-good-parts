@@ -20,26 +20,29 @@ services:
     ports:
       - 9000:8080
     depends_on:
-#      - speakers-api
+      - speakers-api
 #      - participants-api
       - tracks-api
       - redis
 
-#  speakers-api:
-#    container_name: fwdays-speakers-api
-#    image: fwdays-speakers-api
-#    build:
-#      context: .
-#      dockerfile: ./src/FWDays.Speakers/Dockerfile
-#    environment:
-#      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
-#      - ASPNETCORE_ENVIRONMENT=Development
-#      - ASPNETCORE_HTTP_PORTS=8080
-#    ports:
-#      - 9001:8080
-#    depends_on:
-#      - db
-#      - redis
+  speakers-api:
+    container_name: fwdays-speakers-api
+    image: fwdays-speakers-api
+    build:
+      context: .
+      dockerfile: ./src/FWDays.Speakers/Dockerfile
+    environment:
+      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+      - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
+      - GraphQL__Federation=true
+      - GraphQL__DetailedErrors=true
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - 9001:8080
+    depends_on:
+      - db
+      - redis
 
   tracks-api:
     container_name: fwdays-tracks-api

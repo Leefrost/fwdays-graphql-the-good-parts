@@ -1,4 +1,5 @@
 using FWDays.Speakers;
+using FWDays.Speakers.Extensions;
 using FWDays.Speakers.Loaders;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,18 +21,7 @@ builder.Services.AddScoped(serviceProvider => serviceProvider
     .GetRequiredService<IDbContextFactory<SpeakersDbContext>>()
     .CreateDbContext());
 
-builder.Services.AddGraphQLServer()
-    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
-    .AddQueryType()
-    .AddMutationType()
-    .AddTypeExtension<Queries>()
-    .AddTypeExtension<Mutations>()
-    .AddTypeExtension<SpeakerNode>()
-    .AddDataLoader<SpeakerByIdDataLoader>()
-    .AddFiltering()
-    .AddSorting()
-    .AddGlobalObjectIdentification()
-    .EnsureDatabaseIsCreated();
+builder.Services.AddGraphQLSupport(builder.Configuration);
 
 var app = builder.Build();
 
