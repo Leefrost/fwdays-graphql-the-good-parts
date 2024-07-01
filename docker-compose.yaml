@@ -7,31 +7,39 @@ services:
       context: .
       dockerfile: ./src/FWDays.Gateway/Dockerfile
     environment:
-      - ConnectionStrings__Redis=192.168.0.105:6379,password=fwdpass
+      - GraphQL__ServiceName=gateway
+      - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
+      - GraphQL__Services__0__Name=participants
+      - GraphQL__Services__0__Url=http://192.168.0.105:9001/graphql
+      - GraphQL__Services__1__Name=tracks
+      - GraphQL__Services__1__Url=http://192.168.0.105:9002/graphql
+      - GraphQL__Services__2__Name=speakers
+      - GraphQL__Services__2__Url=http://192.168.0.105:9003/graphql
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - 9000:8080
     depends_on:
-      - speakers-api
-      - participants-api
+#      - speakers-api
+#      - participants-api
       - tracks-api
       - redis
 
-  speakers-api:
-    container_name: fwdays-speakers-api
-    image: fwdays-speakers-api
-    build:
-      context: .
-      dockerfile: ./src/FWDays.Speakers/Dockerfile
-    environment:
-      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-    ports:
-      - 9001:8080
-    depends_on:
-      - db
+#  speakers-api:
+#    container_name: fwdays-speakers-api
+#    image: fwdays-speakers-api
+#    build:
+#      context: .
+#      dockerfile: ./src/FWDays.Speakers/Dockerfile
+#    environment:
+#      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - ASPNETCORE_HTTP_PORTS=8080
+#    ports:
+#      - 9001:8080
+#    depends_on:
+#      - db
+#      - redis
 
   tracks-api:
     container_name: fwdays-tracks-api
@@ -41,27 +49,32 @@ services:
       dockerfile: ./src/FWDays.Tracks/Dockerfile
     environment:
       - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+      - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
+      - GraphQL__Federation=true
+      - GraphQL__DetailedErrors=true
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - 9002:8080
     depends_on:
       - db
+      - redis
 
-  participants-api:
-    container_name: fwdays-participants-api
-    image: fwdays-participants-api
-    build:
-      context: .
-      dockerfile: ./src/FWDays.Participants/Dockerfile
-    environment:
-      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-    ports:
-      - 9003:8080
-    depends_on:
-      - db
+#  participants-api:
+#    container_name: fwdays-participants-api
+#    image: fwdays-participants-api
+#    build:
+#      context: .
+#      dockerfile: ./src/FWDays.Participants/Dockerfile
+#    environment:
+#      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - ASPNETCORE_HTTP_PORTS=8080
+#    ports:
+#      - 9003:8080
+#    depends_on:
+#      - db
+#      - redis
 
   db:
     container_name: fwdays-postgres-db

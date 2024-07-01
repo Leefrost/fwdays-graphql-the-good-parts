@@ -1,32 +1,25 @@
+using FWDays.Gateway.Extensions;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddCors(o =>
     o.AddDefaultPolicy(b =>
         b.AllowAnyHeader()
             .AllowAnyMethod()
             .AllowAnyOrigin()));
 
-const string participants = "participants";
-const string speakers = "speakers";
-const string tracks = "tracks";
-
-var participantsUrl = builder.Configuration.GetValue<string>("ParticipantsApi");
-var speakersUrl = builder.Configuration.GetValue<string>("SpeakersApi");
-var tracksUrl = builder.Configuration.GetValue<string>("TracksApi");
-
-var schemaConnString = builder.Configuration.GetConnectionString("Redis");
-
-builder.Services.AddHttpClient(participants, c => c.BaseAddress = new Uri(participantsUrl!));
-builder.Services.AddHttpClient(speakers, c => c.BaseAddress = new Uri(speakersUrl!));
-builder.Services.AddHttpClient(tracks, c => c.BaseAddress = new Uri(tracksUrl!));
-
-builder.Services.AddSingleton(ConnectionMultiplexer.Connect(schemaConnString!));
+var graphQlConfig = builder.Configuration
+    .GetSection(GraphQLConfiguration.SectionName)
+    .Get<GraphQLConfiguration>();
 
 builder.Services
+    .AddGraphQLServices(graphQlConfig!);
+
+builder.Services
+    .AddSingleton(ConnectionMultiplexer.Connect(graphQlConfig!.Redis!))
     .AddGraphQLServer()
-    .AddQueryType(d => d.Name("Query"))
-    .AddRemoteSchemasFromRedis("FWDays", sp => sp.GetRequiredService<ConnectionMultiplexer>());
+    .AddRemoteSchemasFromRedis(graphQlConfig.ServiceName!, sp => sp.GetRequiredService<ConnectionMultiplexer>());
     
 var app = builder.Build();
 

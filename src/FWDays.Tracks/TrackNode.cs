@@ -8,9 +8,6 @@ namespace FWDays.Tracks;
 public class TrackNode
 {
     [NodeResolver]
-    public static Task<Track> GetTrackByIdAsync(
-        int id,
-        TracksByIdDataLoader tracksById,
-        CancellationToken cancellationToken)
+    public static Task<Track> GetTrackByIdAsync(int id, TracksByIdDataLoader tracksById, CancellationToken cancellationToken)
         => tracksById.LoadAsync(id, cancellationToken);
 }

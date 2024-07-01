@@ -1,9 +1,12 @@
 using FWDays.Tracks;
 using FWDays.Tracks.Database;
+using FWDays.Tracks.Extensions;
 using FWDays.Tracks.Loaders;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddCors(o =>
     o.AddDefaultPolicy(b =>
         b.AllowAnyHeader()
@@ -16,22 +19,12 @@ builder.Services
             .UseNpgsql(builder.Configuration.GetConnectionString("Database"))
             .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
 
+//TD: Should be removed and call directly
 builder.Services.AddScoped(serviceProvider => serviceProvider
     .GetRequiredService<IDbContextFactory<TracksDbContext>>()
     .CreateDbContext());
 
-builder.Services.AddGraphQLServer()
-    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
-    .AddQueryType()
-    .AddMutationType()
-    .AddTypeExtension<Queries>()
-    .AddTypeExtension<Mutations>()
-    .AddTypeExtension<TrackNode>()
-    .AddDataLoader<TracksByIdDataLoader>()
-    .AddFiltering()
-    .AddSorting()
-    .AddGlobalObjectIdentification()
-    .EnsureDatabaseIsCreated();
+builder.Services.AddGraphQLSupport(builder.Configuration);
 
 var app = builder.Build();
 
