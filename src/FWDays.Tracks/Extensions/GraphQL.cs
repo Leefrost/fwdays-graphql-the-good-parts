@@ -25,11 +25,9 @@ internal static class GraphQL
             .AddMutationType()
             .AddTypeExtension<Queries>()
             .AddTypeExtension<Mutations>()
-            .AddTypeExtension<TrackNode>()
             .AddDataLoader<TracksByIdDataLoader>()
             .AddFiltering()
             .AddSorting()
-            .AddGlobalObjectIdentification()
             .EnsureDatabaseIsCreated()
             .PublishScheme(graphQLConfiguration);
 
@@ -55,7 +53,7 @@ internal static class GraphQL
         builder.ConfigureSchemaAsync(async (services, _, cancellationToken) =>
         {
             var factory = services.GetRequiredService<IDbContextFactory<TracksDbContext>>();
-            await using var dbContext = factory.CreateDbContext();
+            await using var dbContext = await factory.CreateDbContextAsync(cancellationToken);
 
             if (await dbContext.Database.EnsureCreatedAsync(cancellationToken))
             {
@@ -67,4 +65,5 @@ internal static class GraphQL
 
             await dbContext.SaveChangesAsync(cancellationToken);
         });
+        
 }

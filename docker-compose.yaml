@@ -9,11 +9,12 @@ services:
     environment:
       - GraphQL__ServiceName=gateway
       - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
-      - GraphQL__Services__0__Name=participants
+      - GraphQL__DetailedErrors=true
+      - GraphQL__Services__0__Name=speakers
       - GraphQL__Services__0__Url=http://192.168.0.105:9001/graphql
       - GraphQL__Services__1__Name=tracks
       - GraphQL__Services__1__Url=http://192.168.0.105:9002/graphql
-      - GraphQL__Services__2__Name=speakers
+      - GraphQL__Services__2__Name=participants
       - GraphQL__Services__2__Url=http://192.168.0.105:9003/graphql
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -32,7 +33,7 @@ services:
       context: .
       dockerfile: ./src/FWDays.Speakers/Dockerfile
     environment:
-      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024-speakers;User ID=fwduser;Password=fwdpass;
       - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
       - GraphQL__Federation=true
       - GraphQL__DetailedErrors=true
@@ -51,7 +52,7 @@ services:
       context: .
       dockerfile: ./src/FWDays.Tracks/Dockerfile
     environment:
-      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024-tracks;User ID=fwduser;Password=fwdpass;
       - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
       - GraphQL__Federation=true
       - GraphQL__DetailedErrors=true
@@ -70,7 +71,7 @@ services:
       context: .
       dockerfile: ./src/FWDays.Participants/Dockerfile
     environment:
-      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024;User ID=fwduser;Password=fwdpass;
+      - ConnectionStrings__Database=Host=192.168.0.105;Port=5432;Database=fwdays-2024-participants;User ID=fwduser;Password=fwdpass;
       - GraphQL__Redis=192.168.0.105:6379,password=fwdpass
       - GraphQL__Federation=true
       - GraphQL__DetailedErrors=true
@@ -86,16 +87,15 @@ services:
     container_name: fwdays-postgres-db
     image: postgres:16.1-alpine3.18
     environment:
-      POSTGRES_DB: "fwdays-2024"
       POSTGRES_USER: "fwduser"
       POSTGRES_PASSWORD: "fwdpass"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ./.db-postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U fwduser -d fwdays-2024" ]
+      test: [ "CMD-SHELL", "pg_isready -U fwduser -d postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -114,8 +114,8 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./redis-data:/root/redis
-      - ./redis-data/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./.db-redis:/root/redis
+      - ./.db-redis/redis.conf:/usr/local/etc/redis/redis.conf
     environment:
       - REDIS_PASSWORD=fwdpass
       - REDIS_PORT=6379

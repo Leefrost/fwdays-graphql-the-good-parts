@@ -1,5 +1,4 @@
 using FWDays.Gateway.Extensions;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,18 +8,8 @@ builder.Services.AddCors(o =>
             .AllowAnyMethod()
             .AllowAnyOrigin()));
 
-var graphQlConfig = builder.Configuration
-    .GetSection(GraphQLConfiguration.SectionName)
-    .Get<GraphQLConfiguration>();
+builder.Services.AddGraphQLSupport(builder.Configuration);
 
-builder.Services
-    .AddGraphQLServices(graphQlConfig!);
-
-builder.Services
-    .AddSingleton(ConnectionMultiplexer.Connect(graphQlConfig!.Redis!))
-    .AddGraphQLServer()
-    .AddRemoteSchemasFromRedis(graphQlConfig.ServiceName!, sp => sp.GetRequiredService<ConnectionMultiplexer>());
-    
 var app = builder.Build();
 
 app.UseCors();

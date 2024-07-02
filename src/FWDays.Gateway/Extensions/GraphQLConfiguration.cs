@@ -8,5 +8,6 @@ internal class GraphQLConfiguration
     
     public string? ServiceName { get; set; }
     public string? Redis { get; set; }
+    public bool DetailedErrors { get; set; }
     public List<GraphQLServer> Services { get; set; } = [];
 }

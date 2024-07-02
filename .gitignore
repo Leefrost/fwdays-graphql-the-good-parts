@@ -395,4 +395,5 @@ FodyWeavers.xsd
 .idea
 
 # Project related
-db-data/
+.db-postgres/
+.db-redis/

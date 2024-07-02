@@ -24,11 +24,9 @@ internal static class GraphQL
             .AddMutationType()
             .AddTypeExtension<Queries>()
             .AddTypeExtension<Mutations>()
-            .AddTypeExtension<SpeakerNode>()
             .AddDataLoader<SpeakerByIdDataLoader>()
             .AddFiltering()
             .AddSorting()
-            .AddGlobalObjectIdentification()
             .EnsureDatabaseIsCreated()
             .PublishScheme(graphQLConfiguration);
 
@@ -50,7 +48,7 @@ internal static class GraphQL
         return builder;
     }
 
-    public static IRequestExecutorBuilder EnsureDatabaseIsCreated(this IRequestExecutorBuilder builder) =>
+    private static IRequestExecutorBuilder EnsureDatabaseIsCreated(this IRequestExecutorBuilder builder) =>
         builder.ConfigureSchemaAsync(async (services, _, cancellationToken) =>
         {
             var factory = services.GetRequiredService<IDbContextFactory<SpeakersDbContext>>();
@@ -65,7 +63,8 @@ internal static class GraphQL
                     Company = "Leobit"
                 });
             }
-
+            
             await dbContext.SaveChangesAsync(cancellationToken);
+
         });
 }
