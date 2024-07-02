@@ -1,18 +1,21 @@
-﻿using FWDays.Speakers.Payloads;
+﻿using FWDays.Speakers.Processing;
 
 namespace FWDays.Speakers;
 
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class Mutations
 {
-    public async Task<Speaker> AddSpeakerAsync(
-        AddSpeakerPayload input,
+    public async Task<SpeakerRegistrationPayload> RegisterSpeakerAsync(
+        SpeakerInput input,
         [Service] SpeakersDbContext context,
         CancellationToken cancellationToken)
     {
         var speaker = new Speaker
         {
-            Name = input.Name,
+            FirstName = input.FirstName,
+            LastName = input.LastName,
+            Position = input.Position,
+            Topic = input.Topic,
             Bio = input.Bio,
             Company = input.Company
         };
@@ -20,6 +23,6 @@ public class Mutations
         context.Speakers.Add(speaker);
         await context.SaveChangesAsync(cancellationToken);
 
-        return speaker;
+        return new SpeakerRegistrationPayload(speaker.Id, speaker.FirstName, speaker.LastName, speaker.Topic);
     }
 }

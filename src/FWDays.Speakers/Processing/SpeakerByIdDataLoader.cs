@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FWDays.Speakers.Loaders;
+namespace FWDays.Speakers.Processing;
 
 public class SpeakerByIdDataLoader : BatchDataLoader<int, Speaker>
 {

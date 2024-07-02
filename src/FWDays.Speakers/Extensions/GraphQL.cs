@@ -1,4 +1,4 @@
-﻿using FWDays.Speakers.Loaders;
+﻿using FWDays.Speakers.Processing;
 using HotChocolate.Execution.Configuration;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -58,8 +58,10 @@ internal static class GraphQL
             {
                 dbContext.Speakers.Add(new Speaker
                 {
-                    Name = "Sergii Lischuk",
-                    Bio = ".NET Developer",
+                    FirstName = "Sergii",
+                    LastName = "Lischuk",
+                    Topic = "GraphQL: The Good parts",
+                    Position = ".NET Developer",
                     Company = "Leobit"
                 });
             }

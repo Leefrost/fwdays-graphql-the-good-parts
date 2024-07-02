@@ -1,4 +1,4 @@
-﻿using FWDays.Speakers.Loaders;
+﻿using FWDays.Speakers.Processing;
 
 namespace FWDays.Speakers;
 
