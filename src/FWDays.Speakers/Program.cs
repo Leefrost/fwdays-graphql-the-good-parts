@@ -1,6 +1,5 @@
 using FWDays.Speakers;
 using FWDays.Speakers.Extensions;
-using FWDays.Speakers.Loaders;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

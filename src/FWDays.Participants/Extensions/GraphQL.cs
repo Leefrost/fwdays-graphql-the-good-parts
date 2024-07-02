@@ -1,5 +1,5 @@
 ﻿using FWDays.Participants.Database;
-using FWDays.Participants.Loaders;
+using FWDays.Participants.Processing;
 using HotChocolate.Execution.Configuration;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -8,7 +8,7 @@ namespace FWDays.Participants.Extensions;
 
 internal static class GraphQL
 {
-    public static IServiceCollection AddGraphQLSupport(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection SetupGraphQL(this IServiceCollection services, IConfiguration configuration)
     {
         var graphQLConfiguration = new GraphQLConfiguration();
         configuration

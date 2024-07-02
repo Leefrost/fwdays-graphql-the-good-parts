@@ -1,9 +1,6 @@
-using FWDays.Tracks;
 using FWDays.Tracks.Database;
 using FWDays.Tracks.Extensions;
-using FWDays.Tracks.Loaders;
 using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 

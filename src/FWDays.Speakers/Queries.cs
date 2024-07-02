@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using FWDays.Speakers.Loaders;
+﻿using FWDays.Speakers.Loaders;
 
 namespace FWDays.Speakers;
 

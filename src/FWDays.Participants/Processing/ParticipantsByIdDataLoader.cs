@@ -1,7 +1,7 @@
 ﻿using FWDays.Participants.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace FWDays.Participants.Loaders;
+namespace FWDays.Participants.Processing;
 
 public class ParticipantsByIdDataLoader : BatchDataLoader<int, Participant>
 {

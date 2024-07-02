@@ -1,7 +1,5 @@
-using FWDays.Participants;
 using FWDays.Participants.Database;
 using FWDays.Participants.Extensions;
-using FWDays.Participants.Loaders;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +19,7 @@ builder.Services.AddScoped(serviceProvider => serviceProvider
     .GetRequiredService<IDbContextFactory<ParticipantsDbContext>>()
     .CreateDbContext());
 
-builder.Services.AddGraphQLSupport(builder.Configuration);
+builder.Services.SetupGraphQL(builder.Configuration);
 
 var app = builder.Build();
 

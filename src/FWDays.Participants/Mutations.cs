@@ -1,26 +1,28 @@
 ﻿using FWDays.Participants.Database;
-using FWDays.Participants.Payloads;
+using FWDays.Participants.Processing;
 
 namespace FWDays.Participants;
 
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class Mutations
 {
-    public async Task<Participant> AddParticipantAsync(
-        AddParticipantPayload input,
-        [Service] ParticipantsDbContext context,
+    public async Task<ParticipantRegistrationPayload> RegisterParticipantAsync(
+        ParticipantRegistrationInput input, 
+        [Service] ParticipantsDbContext context, 
         CancellationToken cancellationToken)
     {
         var participant = new Participant
         {
             FirstName = input.FirstName,
             LastName = input.LastName,
-            EmailAddress = input.EmailAddress,
+            EmailAddress = input.Email,
+            UserName = input.Nickname
         };
 
         context.Participants.Add(participant);
+        
         await context.SaveChangesAsync(cancellationToken);
 
-        return participant;
+        return new ParticipantRegistrationPayload(participant.Id, participant.FirstName, participant.LastName);
     }
 }
