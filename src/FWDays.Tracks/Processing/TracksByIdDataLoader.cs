@@ -1,7 +1,7 @@
 ﻿using FWDays.Tracks.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace FWDays.Tracks.Loaders;
+namespace FWDays.Tracks.Processing;
 
 public class TracksByIdDataLoader : BatchDataLoader<int, Track>
 {

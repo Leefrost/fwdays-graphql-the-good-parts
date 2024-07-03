@@ -1,5 +1,5 @@
 ﻿using FWDays.Tracks.Database;
-using FWDays.Tracks.Loaders;
+using FWDays.Tracks.Processing;
 using HotChocolate.Execution.Configuration;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -59,7 +59,20 @@ internal static class GraphQL
             {
                 dbContext.Tracks.Add(new Track
                 {
-                    Name = "GraphQL: The good parts",
+                    Topic = "GraphQL: The good parts",
+                    Speaker = new TrackSpeaker {
+                        FirstName = "Sergii",
+                        LastName = "Lischuk"
+                    },
+                    Participants =
+                    [
+                        new TrackParticipant
+                        {
+                            FirstName = "Michael",
+                            LastName = "Staib",
+
+                        }
+                    ]
                 });
             }
 

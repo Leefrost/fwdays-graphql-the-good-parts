@@ -10,4 +10,6 @@ public class TracksDbContext: DbContext
     }
 
     public DbSet<Track> Tracks { get; set; } = default!;
+    public DbSet<TrackSpeaker> Speakers { get; set; } = default!;
+    public DbSet<TrackParticipant> Participants { get; set; } = default!;
 }
