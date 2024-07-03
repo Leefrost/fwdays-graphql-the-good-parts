@@ -24,7 +24,10 @@ services:
       - speakers-api
       - participants-api
       - tracks-api
-      - redis
+      - redis:
+          condition: service_healthy
+      - db:
+          condition: service_healthy
 
   speakers-api:
     container_name: fwdays-speakers-api
@@ -42,8 +45,10 @@ services:
     ports:
       - 9001:8080
     depends_on:
-      - db
-      - redis
+      - redis:
+          condition: service_healthy
+      - db:
+          condition: service_healthy
 
   tracks-api:
     container_name: fwdays-tracks-api
@@ -61,8 +66,10 @@ services:
     ports:
       - 9002:8080
     depends_on:
-      - db
-      - redis
+      - redis:
+          condition: service_healthy
+      - db:
+          condition: service_healthy
 
   participants-api:
     container_name: fwdays-participants-api
@@ -80,8 +87,10 @@ services:
     ports:
       - 9003:8080
     depends_on:
-      - db
-      - redis
+      - redis:
+          condition: service_healthy
+      - db:
+          condition: service_healthy
 
   db:
     container_name: fwdays-postgres-db
@@ -113,6 +122,8 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     volumes:
       - ./.db-redis:/root/redis
       - ./.db-redis/redis.conf:/usr/local/etc/redis/redis.conf

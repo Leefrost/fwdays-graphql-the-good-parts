@@ -38,13 +38,14 @@ internal static class GraphQL
         this IRequestExecutorBuilder builder, GraphQLConfiguration graphQlConfiguration
         )
     {
-        if (graphQlConfiguration.Federation)
-        {
-            builder.PublishSchemaDefinition(c => c
-                .SetName(graphQlConfiguration.ServiceName!)
-                .PublishToRedis(graphQlConfiguration.GatewayName!, 
-                    sp => sp.GetRequiredService<ConnectionMultiplexer>()));
-        }
+        if (!graphQlConfiguration.Federation) 
+            return builder;
+        
+        builder.PublishSchemaDefinition(c => c
+            .SetName(graphQlConfiguration.ServiceName!)
+            .PublishToRedis(graphQlConfiguration.GatewayName!, 
+                sp => sp.GetRequiredService<ConnectionMultiplexer>()));
+        builder.InitializeOnStartup();
 
         return builder;
     }
