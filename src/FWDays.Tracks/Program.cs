@@ -16,7 +16,6 @@ builder.Services
             .UseNpgsql(builder.Configuration.GetConnectionString("Database"))
             .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
 
-//TD: Should be removed and call directly
 builder.Services.AddScoped(serviceProvider => serviceProvider
     .GetRequiredService<IDbContextFactory<TracksDbContext>>()
     .CreateDbContext());
