@@ -1,1 +1,0 @@
-Described structure

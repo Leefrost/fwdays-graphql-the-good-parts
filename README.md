@@ -4,16 +4,17 @@
 <big>
   <h1 align="center">.NET FWDays 2024</h1>
 </big>
-<p align="center">
-  Simple microservice application with GraphQL on board
-</p>
 
 This project provides a GraphQL API for managing data related to the simplified FWDays conference.
 It utilizes ASP.NET 8 and a microservice architecture to achieve scalability and maintainability.
 
-### The Purpose
+### Disclaimer
 
-This project aims to demonstrate the implementation of a GraphQL API using ASP.NET 8 and the HotChocolate library. 
+This project is a demonstration of the capabilities of HotChocolate and GraphQL. It is a simplified example and may not reflect production-ready code.
+
+### Purpose
+
+Demo aims to demonstrate the implementation of a GraphQL API using ASP.NET 8 and the HotChocolate library. 
 It showcases microservice architecture for building APIs with clear separation of concerns. 
 The chosen domain, conference, involves managing participants, tracks, and speakers.
 
@@ -63,5 +64,4 @@ dotnet restore
 
 
 ### Additional Notes
-- This README provides a basic overview. Further documentation for specific functionalities and configurations might be added within the codebase.
 - Security considerations (authentication, authorization) and implementation are not covered in this project.
