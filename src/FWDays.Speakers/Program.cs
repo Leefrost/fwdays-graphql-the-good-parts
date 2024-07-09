@@ -27,6 +27,7 @@ var app = builder.Build();
 app.UseCors();
 app.UseRouting();
 app.MapGraphQL();
+app.MapHealthChecks("/health");
 
 app.MapGet("/", context =>
 {

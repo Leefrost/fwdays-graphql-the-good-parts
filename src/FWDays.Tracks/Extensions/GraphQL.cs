@@ -31,6 +31,11 @@ internal static class GraphQL
             .EnsureDatabaseIsCreated()
             .PublishScheme(graphQLConfiguration);
 
+        if (graphQLConfiguration.Federation)
+            services
+                .AddHealthChecks()
+                .AddRedis(graphQLConfiguration.Redis!);
+
         return services;
     }
 

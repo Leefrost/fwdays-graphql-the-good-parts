@@ -23,6 +23,10 @@ internal static class GraphQL
             .InitializeOnStartup()
             .AddRemoteSchemasFromRedis(graphQlConfiguration.ServiceName!,
                 sp => sp.GetRequiredService<ConnectionMultiplexer>());
+        
+        services
+            .AddHealthChecks()
+            .AddRedis(graphQlConfiguration.Redis!);
 
         return services;
     }

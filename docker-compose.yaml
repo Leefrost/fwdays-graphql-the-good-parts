@@ -22,11 +22,11 @@ services:
       - 9000:8080
     depends_on:
         speakers-api:
-          condition: service_started
+          condition: service_healthy
         participants-api:
-          condition: service_started
+          condition: service_healthy
         tracks-api:
-          condition: service_started
+          condition: service_healthy
 
   speakers-api:
     container_name: fwdays-speakers-api
@@ -43,6 +43,12 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - 9001:8080
+    healthcheck:
+      test: curl --fail http://localhost:8080/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     depends_on:
         redis:
           condition: service_healthy
@@ -64,6 +70,12 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - 9002:8080
+    healthcheck:
+      test: curl --fail http://localhost:8080/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     depends_on:
         redis:
           condition: service_healthy
@@ -85,6 +97,12 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - 9003:8080
+    healthcheck:
+      test: curl --fail http://localhost:8080/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     depends_on:
         redis:
           condition: service_healthy

@@ -29,6 +29,11 @@ internal static class GraphQL
             .AddSorting()
             .EnsureDatabaseIsCreated()
             .PublishScheme(graphQLConfiguration);
+        
+        if (graphQLConfiguration.Federation)
+            services
+                .AddHealthChecks()
+                .AddRedis(graphQLConfiguration.Redis!);
 
         return services;
     }
@@ -37,13 +42,14 @@ internal static class GraphQL
         this IRequestExecutorBuilder builder, GraphQLConfiguration graphQlConfiguration
         )
     {
-        if (graphQlConfiguration.Federation)
-        {
-            builder.PublishSchemaDefinition(c => c
-                .SetName(graphQlConfiguration.ServiceName!)
-                .PublishToRedis(graphQlConfiguration.GatewayName!, 
-                    sp => sp.GetRequiredService<ConnectionMultiplexer>()));
-        }
+        if (!graphQlConfiguration.Federation) 
+            return builder;
+        
+        builder.PublishSchemaDefinition(c => c
+            .SetName(graphQlConfiguration.ServiceName!)
+            .PublishToRedis(graphQlConfiguration.GatewayName!, 
+                sp => sp.GetRequiredService<ConnectionMultiplexer>()));
+        builder.InitializeOnStartup();
 
         return builder;
     }
