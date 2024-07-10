@@ -1,5 +1,4 @@
 using FWDays.Speakers;
-using HotChocolate;
 using HotChocolate.Execution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,16 +14,16 @@ public class SpeakersSchema
     [Fact]
     public async Task SchemaChanged()
     {
-        ISchema schema =
-            await new ServiceCollection()
-                .AddDbContextPool<SpeakersDbContext>(
-                    options => options.UseInMemoryDatabase("Data Source=fwdays.db"))
-                .AddGraphQL()
+        var builder = new ServiceCollection()
+            .AddDbContextPool<SpeakersDbContext>(
+                options => options.UseInMemoryDatabase("Data Source=fwdays.db"))
+            .AddGraphQL()
             .AddQueryType(d => d.Name("Query"))
-                .AddTypeExtension<Queries>()
+            .AddTypeExtension<Queries>()
             .AddMutationType(d => d.Name("Mutation"))
-                .AddTypeExtension<Mutations>()
-            .BuildSchemaAsync();
+            .AddTypeExtension<Mutations>();
+        
+        var schema = await builder.BuildSchemaAsync();
 
         schema.Print().MatchSnapshot();
     }

@@ -1,4 +1,3 @@
-using HotChocolate;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using HotChocolate.Execution;
@@ -15,16 +14,16 @@ public class TracksSchema
     [Fact]
     public async Task SchemaChanged()
     {
-        ISchema schema =
-            await new ServiceCollection()
-                .AddDbContextPool<TracksDbContext>(
-                    options => options.UseInMemoryDatabase("Data Source=fwdays.db"))
-                .AddGraphQL()
+        var builder = new ServiceCollection()
+            .AddDbContextPool<TracksDbContext>(
+                options => options.UseInMemoryDatabase("Data Source=fwdays.db"))
+            .AddGraphQL()
             .AddQueryType(d => d.Name("Query"))
-                .AddTypeExtension<Queries>()
+            .AddTypeExtension<Queries>()
             .AddMutationType(d => d.Name("Mutation"))
-                .AddTypeExtension<Mutations>()
-            .BuildSchemaAsync();
+            .AddTypeExtension<Mutations>();
+        
+        var schema = await builder.BuildSchemaAsync();
 
         schema.Print().MatchSnapshot();
     }
