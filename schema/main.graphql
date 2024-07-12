@@ -1,3 +1,6 @@
+"""
+Annotates the original name of a type.
+"""
 directive @source(
   """
   The original name of the annotated type.
