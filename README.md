@@ -8,7 +8,7 @@
 This project provides a GraphQL API for managing data related to the simplified FWDays conference.
 It utilizes ASP.NET 8 and a microservice architecture to achieve scalability and maintainability.
 
-### Disclaimer
+### ⚠️ Disclaimer
 
 This project is a demonstration of the capabilities of HotChocolate and GraphQL. It is a simplified example and may not reflect production-ready code.
 
@@ -58,7 +58,7 @@ docker compose up --build
 cd fwdays-graphql-the-good-parts
 dotnet restore
 ```
-3. Provide correct configuration for each microservice (`appsettings.json`)
+3. Provide correct configuration for each microservice - typically, in `appsettings.json`
 
 5. Start the services: Run each microservice project individually using `dotnet run`
 
