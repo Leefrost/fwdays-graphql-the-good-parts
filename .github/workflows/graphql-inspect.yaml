@@ -1,5 +1,14 @@
 name: Inspect
-on: [push]
+on:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  actions: read
+  contents: read 
+  pull-requests: write
+  security-events: write
+  checks: write
 
 jobs:
   test:
@@ -8,8 +17,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
  
       - uses: kamilkisiela/graphql-inspector@master
         with:
-          schema: .\schema\main.graphql
+          schema: 'main:schema/main.graphql'
+          approve-label: approved-schema-breaking-changes
