@@ -29,48 +29,6 @@ directive @source(
 ) repeatable on OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
 
 type Query {
-  tracks(
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-  ): TracksConnection
-  speakers(
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-  ): SpeakersConnection
   participants(
     """
     Returns the first _n_ elements from the list.
@@ -92,15 +50,51 @@ type Query {
     """
     before: String
   ): ParticipantsConnection
+  speakers(
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+  ): SpeakersConnection
+  tracks(
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+  ): TracksConnection
 }
 
 type Mutation {
-  createTrack(input: TrackInput!): CreateTrackPayload!
-  assignParticipant(
-    trackId: Int!
-    participantInput: TrackParticipantInput!
-  ): AssignParticipantPayload!
-  registerSpeaker(input: SpeakerInput!): SpeakerRegistrationPayload!
   registerParticipant(
     input: ParticipantRegistrationInput!
   ): ParticipantRegistrationPayload!
@@ -108,17 +102,12 @@ type Mutation {
     participantId: Int!
     email: String!
   ): ParticipantRegistrationPayload!
-}
-
-type AssignParticipantPayload {
-  trackId: Int!
-  participant: String!
-}
-
-type CreateTrackPayload {
-  trackId: Int!
-  topic: String!
-  speaker: String!
+  registerSpeaker(input: SpeakerInput!): SpeakerRegistrationPayload!
+  createTrack(input: TrackInput!): CreateTrackPayload!
+  assignParticipant(
+    trackId: Int!
+    participantInput: TrackParticipantInput!
+  ): AssignParticipantPayload!
 }
 
 """
@@ -144,6 +133,136 @@ type PageInfo {
   When paginating forwards, the cursor to continue.
   """
   endCursor: String
+}
+
+type Participant {
+  id: Int!
+  firstName: String
+  lastName: String
+  userName: String
+  emailAddress: String
+}
+
+type ParticipantRegistrationPayload {
+  id: Int!
+  firstName: String!
+  lastName: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type ParticipantsConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [ParticipantsEdge!]
+
+  """
+  A flattened list of the nodes.
+  """
+  nodes: [Participant!]
+}
+
+"""
+An edge in a connection.
+"""
+type ParticipantsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Participant!
+}
+
+input ParticipantRegistrationInput {
+  firstName: String!
+  lastName: String!
+  nickname: String!
+  email: String!
+}
+
+type Speaker {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  company: String!
+  position: String!
+  bio: String
+  topic: String!
+  github: String!
+}
+
+type SpeakerRegistrationPayload {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  topic: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type SpeakersConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [SpeakersEdge!]
+
+  """
+  A flattened list of the nodes.
+  """
+  nodes: [Speaker!]
+}
+
+"""
+An edge in a connection.
+"""
+type SpeakersEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Speaker!
+}
+
+input SpeakerInput {
+  firstName: String!
+  lastName: String!
+  company: String!
+  position: String!
+  bio: String!
+  topic: String!
+  github: String!
+}
+
+type AssignParticipantPayload {
+  trackId: Int!
+  participant: String!
+}
+
+type CreateTrackPayload {
+  trackId: Int!
+  topic: String!
+  speaker: String!
 }
 
 type Track {
@@ -213,121 +332,4 @@ input TrackParticipantInput {
 input TrackSpeakerInput {
   firstName: String!
   lastName: String!
-}
-
-type Speaker {
-  id: Int!
-  firstName: String!
-  lastName: String!
-  company: String!
-  position: String!
-  bio: String
-  topic: String!
-}
-
-type SpeakerRegistrationPayload {
-  id: Int!
-  firstName: String!
-  lastName: String!
-  topic: String!
-}
-
-"""
-A connection to a list of items.
-"""
-type SpeakersConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-
-  """
-  A list of edges.
-  """
-  edges: [SpeakersEdge!]
-
-  """
-  A flattened list of the nodes.
-  """
-  nodes: [Speaker!]
-}
-
-"""
-An edge in a connection.
-"""
-type SpeakersEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Speaker!
-}
-
-input SpeakerInput {
-  firstName: String!
-  lastName: String!
-  company: String!
-  position: String!
-  bio: String!
-  topic: String!
-}
-
-type Participant {
-  id: Int!
-  firstName: String
-  lastName: String
-  userName: String
-  emailAddress: String
-}
-
-type ParticipantRegistrationPayload {
-  id: Int!
-  firstName: String!
-  lastName: String!
-}
-
-"""
-A connection to a list of items.
-"""
-type ParticipantsConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-
-  """
-  A list of edges.
-  """
-  edges: [ParticipantsEdge!]
-
-  """
-  A flattened list of the nodes.
-  """
-  nodes: [Participant!]
-}
-
-"""
-An edge in a connection.
-"""
-type ParticipantsEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Participant!
-}
-
-input ParticipantRegistrationInput {
-  firstName: String!
-  lastName: String!
-  nickname: String!
-  email: String!
 }
