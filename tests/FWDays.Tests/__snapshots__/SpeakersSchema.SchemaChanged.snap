@@ -31,7 +31,7 @@ type Speaker {
   position: String!
   bio: String
   topic: String!
-  github: String!
+  github: String
 }
 
 type SpeakerRegistrationPayload {
@@ -66,5 +66,5 @@ input SpeakerInput {
   position: String!
   bio: String!
   topic: String!
-  github: String!
+  github: String
 }

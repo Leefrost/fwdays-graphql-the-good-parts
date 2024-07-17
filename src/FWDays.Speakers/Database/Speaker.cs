@@ -9,5 +9,5 @@ public class Speaker
     public string Position { get; set; }
     public string? Bio { get; set; }
     public string Topic { get; set; }
-    public string Github { get; set; }
+    public string? Github { get; set; }
 }
