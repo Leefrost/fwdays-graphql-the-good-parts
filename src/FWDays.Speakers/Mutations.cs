@@ -17,7 +17,8 @@ public class Mutations
             Position = input.Position,
             Topic = input.Topic,
             Bio = input.Bio,
-            Company = input.Company
+            Company = input.Company,
+            Github = input.Github,
         };
 
         context.Speakers.Add(speaker);
